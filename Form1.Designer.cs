@@ -31,12 +31,12 @@
             this.components = new System.ComponentModel.Container();
             this.TIMER = new System.Windows.Forms.Timer(this.components);
             this.MAIN_PNL = new System.Windows.Forms.Panel();
-            this.PNL_HEAD = new System.Windows.Forms.Panel();
-            this.LBL_STATUS = new System.Windows.Forms.Label();
-            this.PANEL_BOTTOM = new System.Windows.Forms.Panel();
-            this.PNL_LEFT = new System.Windows.Forms.Panel();
-            this.PNL_RIGHT = new System.Windows.Forms.Panel();
             this.PCT_CANVAS = new System.Windows.Forms.PictureBox();
+            this.PNL_RIGHT = new System.Windows.Forms.Panel();
+            this.PNL_LEFT = new System.Windows.Forms.Panel();
+            this.PANEL_BOTTOM = new System.Windows.Forms.Panel();
+            this.LBL_STATUS = new System.Windows.Forms.Label();
+            this.PNL_HEAD = new System.Windows.Forms.Panel();
             this.MAIN_PNL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PCT_CANVAS)).BeginInit();
             this.SuspendLayout();
@@ -45,7 +45,7 @@
             // 
             this.TIMER.Enabled = true;
             this.TIMER.Interval = 10;
-            this.TIMER.Tick += new System.EventHandler(this.timer1_Tick);
+            this.TIMER.Tick += new System.EventHandler(this.TIMER_Tick);
             // 
             // MAIN_PNL
             // 
@@ -63,41 +63,14 @@
             this.MAIN_PNL.Size = new System.Drawing.Size(800, 450);
             this.MAIN_PNL.TabIndex = 2;
             // 
-            // PNL_HEAD
+            // PCT_CANVAS
             // 
-            this.PNL_HEAD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.PNL_HEAD.Dock = System.Windows.Forms.DockStyle.Top;
-            this.PNL_HEAD.Location = new System.Drawing.Point(0, 0);
-            this.PNL_HEAD.Name = "PNL_HEAD";
-            this.PNL_HEAD.Size = new System.Drawing.Size(800, 80);
-            this.PNL_HEAD.TabIndex = 0;
-            // 
-            // LBL_STATUS
-            // 
-            this.LBL_STATUS.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.LBL_STATUS.Location = new System.Drawing.Point(0, 434);
-            this.LBL_STATUS.Name = "LBL_STATUS";
-            this.LBL_STATUS.Size = new System.Drawing.Size(800, 16);
-            this.LBL_STATUS.TabIndex = 1;
-            this.LBL_STATUS.Text = "label1";
-            // 
-            // PANEL_BOTTOM
-            // 
-            this.PANEL_BOTTOM.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.PANEL_BOTTOM.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PANEL_BOTTOM.Location = new System.Drawing.Point(0, 354);
-            this.PANEL_BOTTOM.Name = "PANEL_BOTTOM";
-            this.PANEL_BOTTOM.Size = new System.Drawing.Size(800, 80);
-            this.PANEL_BOTTOM.TabIndex = 2;
-            // 
-            // PNL_LEFT
-            // 
-            this.PNL_LEFT.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.PNL_LEFT.Dock = System.Windows.Forms.DockStyle.Left;
-            this.PNL_LEFT.Location = new System.Drawing.Point(0, 80);
-            this.PNL_LEFT.Name = "PNL_LEFT";
-            this.PNL_LEFT.Size = new System.Drawing.Size(150, 274);
-            this.PNL_LEFT.TabIndex = 3;
+            this.PCT_CANVAS.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PCT_CANVAS.Location = new System.Drawing.Point(150, 80);
+            this.PCT_CANVAS.Name = "PCT_CANVAS";
+            this.PCT_CANVAS.Size = new System.Drawing.Size(500, 274);
+            this.PCT_CANVAS.TabIndex = 0;
+            this.PCT_CANVAS.TabStop = false;
             // 
             // PNL_RIGHT
             // 
@@ -108,14 +81,41 @@
             this.PNL_RIGHT.Size = new System.Drawing.Size(150, 274);
             this.PNL_RIGHT.TabIndex = 4;
             // 
-            // PCT_CANVAS
+            // PNL_LEFT
             // 
-            this.PCT_CANVAS.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PCT_CANVAS.Location = new System.Drawing.Point(150, 80);
-            this.PCT_CANVAS.Name = "PCT_CANVAS";
-            this.PCT_CANVAS.Size = new System.Drawing.Size(500, 274);
-            this.PCT_CANVAS.TabIndex = 0;
-            this.PCT_CANVAS.TabStop = false;
+            this.PNL_LEFT.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.PNL_LEFT.Dock = System.Windows.Forms.DockStyle.Left;
+            this.PNL_LEFT.Location = new System.Drawing.Point(0, 80);
+            this.PNL_LEFT.Name = "PNL_LEFT";
+            this.PNL_LEFT.Size = new System.Drawing.Size(150, 274);
+            this.PNL_LEFT.TabIndex = 3;
+            // 
+            // PANEL_BOTTOM
+            // 
+            this.PANEL_BOTTOM.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.PANEL_BOTTOM.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.PANEL_BOTTOM.Location = new System.Drawing.Point(0, 354);
+            this.PANEL_BOTTOM.Name = "PANEL_BOTTOM";
+            this.PANEL_BOTTOM.Size = new System.Drawing.Size(800, 80);
+            this.PANEL_BOTTOM.TabIndex = 2;
+            // 
+            // LBL_STATUS
+            // 
+            this.LBL_STATUS.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.LBL_STATUS.Location = new System.Drawing.Point(0, 434);
+            this.LBL_STATUS.Name = "LBL_STATUS";
+            this.LBL_STATUS.Size = new System.Drawing.Size(800, 16);
+            this.LBL_STATUS.TabIndex = 1;
+            this.LBL_STATUS.Text = "label1";
+            // 
+            // PNL_HEAD
+            // 
+            this.PNL_HEAD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.PNL_HEAD.Dock = System.Windows.Forms.DockStyle.Top;
+            this.PNL_HEAD.Location = new System.Drawing.Point(0, 0);
+            this.PNL_HEAD.Name = "PNL_HEAD";
+            this.PNL_HEAD.Size = new System.Drawing.Size(800, 80);
+            this.PNL_HEAD.TabIndex = 0;
             // 
             // Form1
             // 
