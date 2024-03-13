@@ -39,8 +39,14 @@ namespace ExamenParcial
             this.PANEL_BOTTOM = new System.Windows.Forms.Panel();
             this.LBL_STATUS = new System.Windows.Forms.Label();
             this.PNL_HEAD = new System.Windows.Forms.Panel();
+            this.CHBX_ROTX = new System.Windows.Forms.CheckBox();
+            this.CHBX_ROTY = new System.Windows.Forms.CheckBox();
+            this.CHBX_ROTZ = new System.Windows.Forms.CheckBox();
+            this.CHBX_LINES = new System.Windows.Forms.CheckBox();
+            this.CHBX_COLOR = new System.Windows.Forms.CheckBox();
             this.MAIN_PNL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PCT_CANVAS)).BeginInit();
+            this.PNL_LEFT.SuspendLayout();
             this.SuspendLayout();
             // 
             // TIMER
@@ -89,6 +95,11 @@ namespace ExamenParcial
             // PNL_LEFT
             // 
             this.PNL_LEFT.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.PNL_LEFT.Controls.Add(this.CHBX_COLOR);
+            this.PNL_LEFT.Controls.Add(this.CHBX_LINES);
+            this.PNL_LEFT.Controls.Add(this.CHBX_ROTZ);
+            this.PNL_LEFT.Controls.Add(this.CHBX_ROTY);
+            this.PNL_LEFT.Controls.Add(this.CHBX_ROTX);
             this.PNL_LEFT.Dock = System.Windows.Forms.DockStyle.Left;
             this.PNL_LEFT.Location = new System.Drawing.Point(0, 65);
             this.PNL_LEFT.Margin = new System.Windows.Forms.Padding(2);
@@ -126,6 +137,57 @@ namespace ExamenParcial
             this.PNL_HEAD.Size = new System.Drawing.Size(600, 65);
             this.PNL_HEAD.TabIndex = 0;
             // 
+            // CHBX_ROTX
+            // 
+            this.CHBX_ROTX.AutoSize = true;
+            this.CHBX_ROTX.Location = new System.Drawing.Point(13, 6);
+            this.CHBX_ROTX.Name = "CHBX_ROTX";
+            this.CHBX_ROTX.Size = new System.Drawing.Size(91, 17);
+            this.CHBX_ROTX.TabIndex = 0;
+            this.CHBX_ROTX.Text = "CHBX_ROTX";
+            this.CHBX_ROTX.UseVisualStyleBackColor = true;
+            // 
+            // CHBX_ROTY
+            // 
+            this.CHBX_ROTY.AutoSize = true;
+            this.CHBX_ROTY.Location = new System.Drawing.Point(13, 30);
+            this.CHBX_ROTY.Name = "CHBX_ROTY";
+            this.CHBX_ROTY.Size = new System.Drawing.Size(80, 17);
+            this.CHBX_ROTY.TabIndex = 1;
+            this.CHBX_ROTY.Text = "checkBox2";
+            this.CHBX_ROTY.UseVisualStyleBackColor = true;
+            // 
+            // CHBX_ROTZ
+            // 
+            this.CHBX_ROTZ.AutoSize = true;
+            this.CHBX_ROTZ.Location = new System.Drawing.Point(13, 54);
+            this.CHBX_ROTZ.Name = "CHBX_ROTZ";
+            this.CHBX_ROTZ.Size = new System.Drawing.Size(80, 17);
+            this.CHBX_ROTZ.TabIndex = 2;
+            this.CHBX_ROTZ.Text = "checkBox3";
+            this.CHBX_ROTZ.UseVisualStyleBackColor = true;
+            // 
+            // CHBX_LINES
+            // 
+            this.CHBX_LINES.AutoSize = true;
+            this.CHBX_LINES.Location = new System.Drawing.Point(13, 178);
+            this.CHBX_LINES.Name = "CHBX_LINES";
+            this.CHBX_LINES.Size = new System.Drawing.Size(80, 17);
+            this.CHBX_LINES.TabIndex = 3;
+            this.CHBX_LINES.Text = "checkBox4";
+            this.CHBX_LINES.UseVisualStyleBackColor = true;
+            // 
+            // CHBX_COLOR
+            // 
+            this.CHBX_COLOR.AutoSize = true;
+            this.CHBX_COLOR.Location = new System.Drawing.Point(13, 201);
+            this.CHBX_COLOR.Name = "CHBX_COLOR";
+            this.CHBX_COLOR.Size = new System.Drawing.Size(80, 17);
+            this.CHBX_COLOR.TabIndex = 4;
+            this.CHBX_COLOR.Text = "checkBox5";
+            this.CHBX_COLOR.UseVisualStyleBackColor = true;
+            this.CHBX_COLOR.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -139,6 +201,8 @@ namespace ExamenParcial
             this.Load += new System.EventHandler(this.Form1_Load_1);
             this.MAIN_PNL.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PCT_CANVAS)).EndInit();
+            this.PNL_LEFT.ResumeLayout(false);
+            this.PNL_LEFT.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -152,6 +216,11 @@ namespace ExamenParcial
         private System.Windows.Forms.Panel PNL_LEFT;
         private System.Windows.Forms.Panel PANEL_BOTTOM;
         private System.Windows.Forms.Label LBL_STATUS;
+        private System.Windows.Forms.CheckBox CHBX_COLOR;
+        private System.Windows.Forms.CheckBox CHBX_LINES;
+        private System.Windows.Forms.CheckBox CHBX_ROTZ;
+        private System.Windows.Forms.CheckBox CHBX_ROTY;
+        private System.Windows.Forms.CheckBox CHBX_ROTX;
     }
 }
 

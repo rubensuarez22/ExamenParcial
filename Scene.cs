@@ -35,7 +35,7 @@ namespace ExamenParcial
 
 
 
-        public void Render(Graphics g, int canvasWidth, int canvasHeight)
+        public void Render(Graphics g, int canvasWidth, int canvasHeight, bool renderLines, bool applyFlatShading)
         {
             float scaleFactor = 100.0f;
             int centerX = canvasWidth / 2;
@@ -45,18 +45,18 @@ namespace ExamenParcial
 
             foreach (var mesh in meshes)
             {
-                var orderedTriangles = mesh.Triangles.OrderByDescending(tri => tri.Centroid.Values[2]);
+                var orderedTriangles = mesh.Triangles.OrderByDescending(tri => tri.Centroid.Values[2]).ToList();
 
-                foreach (var index in Mesh.Indices)
+                foreach (var triangle in orderedTriangles)
                 {
-                    Vertex v1 = Rotaciones.Rot(rotationAngle, Mesh.Vertices[index.Item1], 'z'); // Ejemplo de rotación en Z
-                    Vertex v2 = Rotaciones.Rot(rotationAngle, Mesh.Vertices[index.Item2], 'z');
-                    Vertex v3 = Rotaciones.Rot(rotationAngle, Mesh.Vertices[index.Item3], 'z');
+                    Vertex v1 = Rotaciones.Rot(rotationAngle, triangle.V1, 'y');
+                    Vertex v2 = Rotaciones.Rot(rotationAngle, triangle.V2, 'y');
+                    Vertex v3 = Rotaciones.Rot(rotationAngle, triangle.V3, 'y');
                     // Aplica rotación a los vértices del triángulo
-                 
+
                     // Calcula el centroide y la normal del triángulo rotado
                     Vertex centroid = Mesh.CalculateCentroid(v1, v2, v3);
-                    Vertex normal = Vertex.CalculateNormal(v1, v2, v3); // Asegúrate de recalcular la normal después de la rotación
+                    Vertex normal = Vertex.CalculateNormal(v1, v2, v3);
 
                     // Dirección hacia la cámara y normalización
                     Vertex cameraDirection = cameraPosition - centroid;
@@ -67,28 +67,44 @@ namespace ExamenParcial
                     Console.WriteLine($"Direction to Camera (normalized): {cameraDirection}");
                     Console.WriteLine($"Dot Product (for back-face culling): {Vertex.Dot(normal, cameraDirection)}");
 
-                    if (Vertex.Dot(normal, cameraDirection) > 0)
+                    if (renderLines)
                     {
-                        // Calcula la dirección de la luz y normalízala
-                        Vertex lightDir = lightPosition - centroid;
-                        lightDir.Normalize();
-
-                        Console.WriteLine($"Normalized Light Direction: {lightDir}");
-                        Console.WriteLine($"Dot Product (light intensity): {Vertex.Dot(normal, lightDir)}");
-
-                        // Calcula la intensidad de la luz y ajusta el color en función de esta
-                        float lightIntensity = Math.Max(0, Vertex.Dot(normal, lightDir));
-                        Color faceColor = CalculateColor(normal, lightDir, Color.White);
-
+                        // Dibuja solo las líneas de los triángulos
                         Point p1 = ScaleAndCenter(v1, centerX, centerY, scaleFactor);
                         Point p2 = ScaleAndCenter(v2, centerX, centerY, scaleFactor);
                         Point p3 = ScaleAndCenter(v3, centerX, centerY, scaleFactor);
 
-                        Console.WriteLine($"Drawing Triangle: p1: {p1}, p2: {p2}, p3: {p3}, Color: {faceColor}");
+                        g.DrawLine(Pens.White, p1, p2);
+                        g.DrawLine(Pens.White, p2, p3);
+                        g.DrawLine(Pens.White, p3, p1);
+                    }
+                    else if (applyFlatShading)
+                    {
 
-                        using (Brush brush = new SolidBrush(faceColor))
+
+                        if (Vertex.Dot(normal, cameraDirection) < 0)
                         {
-                            g.FillPolygon(brush, new[] { p1, p2, p3 });
+                            // Calcula la dirección de la luz y normalízala
+                            Vertex lightDir = lightPosition - centroid;
+                            lightDir.Normalize();
+
+                            Console.WriteLine($"Normalized Light Direction: {lightDir}");
+                            Console.WriteLine($"Dot Product (light intensity): {Vertex.Dot(normal, lightDir)}");
+
+                            // Calcula la intensidad de la luz y ajusta el color en función de esta
+                            float lightIntensity = Math.Max(0, Vertex.Dot(normal, lightDir));
+                            Color faceColor = CalculateColor(normal, lightDir, Color.White);
+
+                            Point p1 = ScaleAndCenter(v1, centerX, centerY, scaleFactor);
+                            Point p2 = ScaleAndCenter(v2, centerX, centerY, scaleFactor);
+                            Point p3 = ScaleAndCenter(v3, centerX, centerY, scaleFactor);
+
+                            Console.WriteLine($"Drawing Triangle: p1: {p1}, p2: {p2}, p3: {p3}, Color: {faceColor}");
+
+                            using (Brush brush = new SolidBrush(faceColor))
+                            {
+                                g.FillPolygon(brush, new[] { p1, p2, p3 });
+                            }
                         }
                     }
                 }

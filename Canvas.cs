@@ -8,10 +8,16 @@ using System.Drawing;
 
 namespace ExamenParcial
 {
-    internal class Canvas
+    public class Canvas
     {
         public Bitmap Bitmap { get; private set; }
         public Scene Scene { get; set; }
+
+        public bool RenderLines { get; set; } = false;
+        public bool ApplyFlatShading { get; set; } = false;
+        public bool RotateX { get; set; } = false;
+        public bool RotateY { get; set; } = false;
+        public bool RotateZ { get; set; } = false;
 
         public void SetBitmap(Bitmap newBitmap)
         {
@@ -28,7 +34,7 @@ namespace ExamenParcial
             using (var g = Graphics.FromImage(Bitmap))
             {
                 g.Clear(Color.Black); // Limpiar el canvas con un color de fondo
-                Scene.Render(g, Bitmap.Width, Bitmap.Height); // Implementar el renderizado de la escena aquí
+                Scene.Render(g, Bitmap.Width, Bitmap.Height, RenderLines, ApplyFlatShading); // Implementar el renderizado de la escena aquí
             }
         }
     }
