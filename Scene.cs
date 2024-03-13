@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
+
 
 namespace ExamenParcial
 {
@@ -47,6 +49,7 @@ namespace ExamenParcial
             int centerY = canvasHeight / 2;
 
             g.Clear(Color.CornflowerBlue); // Ajusta el color de fondo
+            Vector3 globalLightDir = new Vector3(lightPosition.Values[0], lightPosition.Values[1], lightPosition.Values[2]).Normalize();
 
             foreach (var mesh in meshes)
             {
@@ -84,8 +87,10 @@ namespace ExamenParcial
                     Vertex normal = Vertex.CalculateNormal(v1, v2, v3);
 
                     // Dirección hacia la cámara y normalización
+                    Vector3 normalVec = normal.ToVector3();
                     Vertex cameraDirection = cameraPosition - centroid;
                     cameraDirection.Normalize();
+                    Vector3 lightDirVec = globalLightDir;
 
                     Console.WriteLine($"Centroid: {centroid}");
                     Console.WriteLine($"Normal: {normal}");
@@ -116,9 +121,11 @@ namespace ExamenParcial
                             Console.WriteLine($"Normalized Light Direction: {lightDir}");
                             Console.WriteLine($"Dot Product (light intensity): {Vertex.Dot(normal, lightDir)}");
 
-                            // Calcula la intensidad de la luz y ajusta el color en función de esta
-                            float lightIntensity = Math.Max(0, Vertex.Dot(normal, lightDir));
-                            Color faceColor = CalculateColor(normal, lightDir, Color.White);
+
+
+                            lightDirVec = new Vector3(lightPosition.Values[0], lightPosition.Values[1], lightPosition.Values[2]).Normalize();
+                            float lightIntensity = Math.Max(0, Vector3.Dot(normal.ToVector3(), lightDirVec)); // Usa Vector3.Dot aquí
+                            Color faceColor = CalculateColor(normal.ToVector3(), lightDirVec, Color.White); // Ajusta CalculateColor para aceptar Vector3 si es necesario
 
                             Point p1 = ScaleAndCenter(v1, centerX, centerY, scaleFactor);
                             Point p2 = ScaleAndCenter(v2, centerX, centerY, scaleFactor);
@@ -161,9 +168,9 @@ namespace ExamenParcial
                 return value;
             }
         }
-        public Color CalculateColor(Vertex normal, Vertex lightDirection, Color objectColor)
+        public Color CalculateColor(Vector3 normal, Vector3 lightDirection, Color objectColor)
         {
-            float intensity = Math.Max(0, Vertex.Dot(normal, lightDirection));
+            float intensity = Math.Max(0, Vector3.Dot(normal, lightDirection));
             intensity = Clamp(intensity, 0, 1);
             // Ajusta el color del objeto en función de la intensidad de la luz
             int r = (int)(objectColor.R * intensity);

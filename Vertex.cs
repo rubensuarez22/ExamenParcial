@@ -20,6 +20,11 @@ namespace ExamenParcial
             return (float)Math.Sqrt(Values[0] * Values[0] + Values[1] * Values[1] + Values[2] * Values[2]);
         }
 
+        public Vector3 ToVector3()
+        {
+            return new Vector3(Values[0], Values[1], Values[2]);
+        }
+
         public float this[int i]
         {
             get { return Values[i]; }
