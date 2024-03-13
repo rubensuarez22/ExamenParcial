@@ -34,7 +34,7 @@ namespace ExamenParcial
             using (var g = Graphics.FromImage(Bitmap))
             {
                 g.Clear(Color.Black); // Limpiar el canvas con un color de fondo
-                Scene.Render(g, Bitmap.Width, Bitmap.Height, RenderLines, ApplyFlatShading); // Implementar el renderizado de la escena aquí
+                Scene.Render(g, Bitmap.Width, Bitmap.Height, RenderLines, ApplyFlatShading, RotateX, RotateY, RotateZ); 
             }
         }
     }

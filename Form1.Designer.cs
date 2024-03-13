@@ -142,9 +142,9 @@ namespace ExamenParcial
             this.CHBX_ROTX.AutoSize = true;
             this.CHBX_ROTX.Location = new System.Drawing.Point(13, 6);
             this.CHBX_ROTX.Name = "CHBX_ROTX";
-            this.CHBX_ROTX.Size = new System.Drawing.Size(91, 17);
+            this.CHBX_ROTX.Size = new System.Drawing.Size(53, 17);
             this.CHBX_ROTX.TabIndex = 0;
-            this.CHBX_ROTX.Text = "CHBX_ROTX";
+            this.CHBX_ROTX.Text = "Rot X";
             this.CHBX_ROTX.UseVisualStyleBackColor = true;
             // 
             // CHBX_ROTY
@@ -152,9 +152,9 @@ namespace ExamenParcial
             this.CHBX_ROTY.AutoSize = true;
             this.CHBX_ROTY.Location = new System.Drawing.Point(13, 30);
             this.CHBX_ROTY.Name = "CHBX_ROTY";
-            this.CHBX_ROTY.Size = new System.Drawing.Size(80, 17);
+            this.CHBX_ROTY.Size = new System.Drawing.Size(53, 17);
             this.CHBX_ROTY.TabIndex = 1;
-            this.CHBX_ROTY.Text = "checkBox2";
+            this.CHBX_ROTY.Text = "Rot Y";
             this.CHBX_ROTY.UseVisualStyleBackColor = true;
             // 
             // CHBX_ROTZ
@@ -162,9 +162,9 @@ namespace ExamenParcial
             this.CHBX_ROTZ.AutoSize = true;
             this.CHBX_ROTZ.Location = new System.Drawing.Point(13, 54);
             this.CHBX_ROTZ.Name = "CHBX_ROTZ";
-            this.CHBX_ROTZ.Size = new System.Drawing.Size(80, 17);
+            this.CHBX_ROTZ.Size = new System.Drawing.Size(53, 17);
             this.CHBX_ROTZ.TabIndex = 2;
-            this.CHBX_ROTZ.Text = "checkBox3";
+            this.CHBX_ROTZ.Text = "Rot Z";
             this.CHBX_ROTZ.UseVisualStyleBackColor = true;
             // 
             // CHBX_LINES
@@ -172,9 +172,9 @@ namespace ExamenParcial
             this.CHBX_LINES.AutoSize = true;
             this.CHBX_LINES.Location = new System.Drawing.Point(13, 178);
             this.CHBX_LINES.Name = "CHBX_LINES";
-            this.CHBX_LINES.Size = new System.Drawing.Size(80, 17);
+            this.CHBX_LINES.Size = new System.Drawing.Size(77, 17);
             this.CHBX_LINES.TabIndex = 3;
-            this.CHBX_LINES.Text = "checkBox4";
+            this.CHBX_LINES.Text = "WireFrame";
             this.CHBX_LINES.UseVisualStyleBackColor = true;
             // 
             // CHBX_COLOR
@@ -182,9 +182,9 @@ namespace ExamenParcial
             this.CHBX_COLOR.AutoSize = true;
             this.CHBX_COLOR.Location = new System.Drawing.Point(13, 201);
             this.CHBX_COLOR.Name = "CHBX_COLOR";
-            this.CHBX_COLOR.Size = new System.Drawing.Size(80, 17);
+            this.CHBX_COLOR.Size = new System.Drawing.Size(85, 17);
             this.CHBX_COLOR.TabIndex = 4;
-            this.CHBX_COLOR.Text = "checkBox5";
+            this.CHBX_COLOR.Text = "Flat Shading";
             this.CHBX_COLOR.UseVisualStyleBackColor = true;
             this.CHBX_COLOR.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 

@@ -39,9 +39,7 @@ namespace ExamenParcial
             scene = new Scene(objLoader);
             canvas = new Canvas(bmp, scene);
 
-            TIMER.Interval = 16; 
-            TIMER.Tick += TIMER_Tick;
-            TIMER.Start();
+            TIMER.Interval = 16;
         }
 
 
@@ -82,14 +80,34 @@ namespace ExamenParcial
                 bmp = new Bitmap(PCT_CANVAS.Width, PCT_CANVAS.Height);
                 canvas.SetBitmap(bmp);
             }
-            scene.Update();
+            if (CHBX_ROTX.Checked || CHBX_ROTY.Checked || CHBX_ROTZ.Checked)
+            {
+                scene.Update(); // Solo actualiza si alguna rotación está activada
+            }
             canvas.Render();
             PCT_CANVAS.Image = bmp;
+
+            UpdateStatusLabel($"Ángulo: {scene.RotationAngle:F2}");
         }
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
 
         }
+
+        public void UpdateStatusLabel(string text)
+        {
+            // Verifica si la actualización está intentando realizarse desde un hilo diferente al hilo de la UI
+            if (LBL_STATUS.InvokeRequired)
+            {
+                LBL_STATUS.Invoke(new Action(() => LBL_STATUS.Text = text));
+            }
+            else
+            {
+                LBL_STATUS.Text = text;
+            }
+        }
+
+
     }
 }

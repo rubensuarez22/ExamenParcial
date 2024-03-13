@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ExamenParcial
 {
@@ -15,6 +16,8 @@ namespace ExamenParcial
 
         private List<Mesh> meshes;
         private float rotationAngle;
+        public float RotationAngle => rotationAngle; // Propiedad de solo lectura en Scene
+
         private Vertex cameraPosition = new Vertex(new float[] { 0, 1, -1 });
         private Vertex lightPosition = new Vertex(new float[] { 0, 0, -2f });
 
@@ -31,17 +34,19 @@ namespace ExamenParcial
         {
             // Aquí manejarías actualizaciones de la escena, como animaciones o cambios en la rotación
             rotationAngle += 0.01f;
+            rotationAngle %= (float)(2 * Math.PI);
         }
 
 
 
-        public void Render(Graphics g, int canvasWidth, int canvasHeight, bool renderLines, bool applyFlatShading)
+
+        public void Render(Graphics g, int canvasWidth, int canvasHeight, bool renderLines, bool applyFlatShading, bool RotateX, bool RotateY, bool RotateZ)
         {
             float scaleFactor = 100.0f;
             int centerX = canvasWidth / 2;
             int centerY = canvasHeight / 2;
 
-            g.Clear(Color.CornflowerBlue); // Ajusta el color de fondo según prefieras
+            g.Clear(Color.CornflowerBlue); // Ajusta el color de fondo
 
             foreach (var mesh in meshes)
             {
@@ -49,9 +54,29 @@ namespace ExamenParcial
 
                 foreach (var triangle in orderedTriangles)
                 {
-                    Vertex v1 = Rotaciones.Rot(rotationAngle, triangle.V1, 'y');
-                    Vertex v2 = Rotaciones.Rot(rotationAngle, triangle.V2, 'y');
-                    Vertex v3 = Rotaciones.Rot(rotationAngle, triangle.V3, 'y');
+                    Vertex v1 = triangle.V1;
+                    Vertex v2 = triangle.V2;
+                    Vertex v3 = triangle.V3;
+
+                    if (RotateX)
+                    {
+                        v1 = Rotaciones.Rot(rotationAngle, v1, 'x');
+                        v2 = Rotaciones.Rot(rotationAngle, v2, 'x');
+                        v3 = Rotaciones.Rot(rotationAngle, v3, 'x');
+                    }
+                    if (RotateY)
+                    {
+                        v1 = Rotaciones.Rot(rotationAngle, v1, 'y');
+                        v2 = Rotaciones.Rot(rotationAngle, v2, 'y');
+                        v3 = Rotaciones.Rot(rotationAngle, v3, 'y');
+                    }
+                    if (RotateZ)
+                    {
+                        v1 = Rotaciones.Rot(rotationAngle, v1, 'z');
+                        v2 = Rotaciones.Rot(rotationAngle, v2, 'z');
+                        v3 = Rotaciones.Rot(rotationAngle, v3, 'z');
+                    }
+
                     // Aplica rotación a los vértices del triángulo
 
                     // Calcula el centroide y la normal del triángulo rotado
