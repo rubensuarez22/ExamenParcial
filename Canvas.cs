@@ -13,6 +13,10 @@ namespace ExamenParcial
         public Bitmap Bitmap { get; private set; }
         public Scene Scene { get; set; }
 
+        public void SetBitmap(Bitmap newBitmap)
+        {
+            Bitmap = newBitmap;
+        }
         public Canvas(Bitmap bitmap, Scene scene)
         {
             Bitmap = bitmap;
@@ -24,9 +28,10 @@ namespace ExamenParcial
             using (var g = Graphics.FromImage(Bitmap))
             {
                 g.Clear(Color.Black); // Limpiar el canvas con un color de fondo
-                Scene.Render(g); // Implementar el renderizado de la escena aquí
+                Scene.Render(g, Bitmap.Width, Bitmap.Height); // Implementar el renderizado de la escena aquí
             }
         }
     }
+
 }
 

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ExamenParcial
 {
-    public class Rotaciones
+    public static class Rotaciones
     {
-        public Vertex Rot(float angle, Vertex p, char axis)
+        public static Vertex Rot(float angle, Vertex p, char axis)
         {
             float[,] axisRotationMatrix;
             Mtx rotationMatrix;
