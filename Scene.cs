@@ -87,7 +87,7 @@ namespace ExamenParcial
             }
         }
 
-
+        //
 
         public Scene(ObjLoader objLoader)
         {
