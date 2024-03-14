@@ -10,34 +10,44 @@ namespace ExamenParcial
 {
     public class Canvas
     {
-        public Bitmap Bitmap { get; private set; }
-        public Scene Scene { get; set; }
+        private Bitmap bitmap;
+        private Scene scene;
 
-        public bool RenderLines { get; set; } = false;
-        public bool ApplyFlatShading { get; set; } = false;
-        public bool RotateX { get; set; } = false;
-        public bool RotateY { get; set; } = false;
-        public bool RotateZ { get; set; } = false;
+        // Propiedades para controlar el estado del renderizado, por ejemplo:
+        public bool RotateX { get; set; }
+        public bool RotateY { get; set; }
+        public bool RotateZ { get; set; }
+        public bool RenderLines { get; set; }
+        public bool ApplyFlatShading { get; set; }
 
-        public void SetBitmap(Bitmap newBitmap)
+        // Constructor que inicializa el Canvas con la escena
+        public Canvas(Scene scene)
         {
-            Bitmap = newBitmap;
-        }
-        public Canvas(Bitmap bitmap, Scene scene)
-        {
-            Bitmap = bitmap;
-            Scene = scene;
+            this.scene = scene;
         }
 
-        public void Render()
+        // Método para actualizar el bitmap basado en el estado actual
+        public Bitmap UpdateBitmap(int width, int height)
         {
-            using (var g = Graphics.FromImage(Bitmap))
+            // Crear un nuevo bitmap si es necesario
+            if (bitmap == null || bitmap.Width != width || bitmap.Height != height)
             {
-                g.Clear(Color.Black); // Limpiar el canvas con un color de fondo
-                Scene.Render(g, Bitmap.Width, Bitmap.Height, RenderLines, ApplyFlatShading, RotateX, RotateY, RotateZ); 
+                bitmap = new Bitmap(width, height);
             }
+
+            // Aquí podrías realizar operaciones preliminares de dibujo,
+            // como aplicar transformaciones globales, antes de llamar a Scene.Projection.
+            // Este es un buen lugar para gestionar la lógica de rotaciones o escala, por ejemplo.
+
+            // No dibujas directamente aquí, sino que preparas todo para el dibujo.
+            // La llamada a Scene.Projection se hará desde el formulario, usando este bitmap.
+
+            return bitmap;
         }
+
+        // Otros métodos útiles para manejar el estado del dibujo, como rotaciones o escala.
     }
+
 
 }
 
