@@ -15,6 +15,11 @@ namespace ExamenParcial
         const int Z = 2; 
         public float[] Values;
 
+        public float Magnitude()
+        {
+            return (float)Math.Sqrt(Values[0] * Values[0] + Values[1] * Values[1] + Values[2] * Values[2]);
+        }
+
         public float this[int i]
         {
             get { return Values[i]; }
@@ -80,12 +85,6 @@ namespace ExamenParcial
                 a.Values[0] * b.Values[1] - a.Values[1] * b.Values[0]
             });
         }
-
-        public float Magnitude()
-        {
-            return (float)Math.Sqrt(Values[0] * Values[0] + Values[1] * Values[1] + Values[2] * Values[2]);
-        }
-
 
     }
 }

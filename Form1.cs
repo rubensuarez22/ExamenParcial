@@ -75,7 +75,7 @@ namespace ExamenParcial
             {
                 // Ejemplo: Rota 5 grados en X. Convierte grados a radianes.
                 float angleX = 0.01f;
-                scene.RotateAllMeshes(angleX, 0, 0);
+               // scene.RotateAllMeshes(angleX, 0, 0);
             }
             else
             {

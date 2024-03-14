@@ -92,7 +92,7 @@ namespace ExamenParcial
         public Scene(ObjLoader objLoader)
         {
             Mesh = objLoader.Mesh;
-            meshes = new List<Mesh> { Mesh};
+            meshes = new List<Mesh> { Mesh };
 
         }
 
@@ -117,11 +117,11 @@ namespace ExamenParcial
             colorBase = Color.FromArgb(255, 0, 0);
 
             // Utiliza el vector de luz actualizado y lo normaliza
-            Vertex luz = new Vertex(new float[] 
-            { 
-                lightPosition.Values[0], 
-                lightPosition.Values[1], 
-                lightPosition.Values[2] 
+            Vertex luz = new Vertex(new float[]
+            {
+                lightPosition.Values[0],
+                lightPosition.Values[1],
+                lightPosition.Values[2]
             });
 
             luz.Normalize();
@@ -258,11 +258,9 @@ namespace ExamenParcial
             return Color.FromArgb(objectColor.A, r, g, b);
         }
     }
-   
+
 
 
 
 
 }
-
-
