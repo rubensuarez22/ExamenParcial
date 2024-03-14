@@ -79,7 +79,7 @@ namespace ExamenParcial
             }
             else
             {
-                // Si deseas hacer algo cuando el checkbox es desmarcado, colócalo aquí.
+                // Si deseas hacer aalgo cuando el checkbox es desmarcado, colócalo aquí.
             }
 
             RenderScene();
