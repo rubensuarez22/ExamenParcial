@@ -30,12 +30,11 @@ namespace ExamenParcial
             CHBX_ROTY.CheckedChanged += CHBX_ROTY_CheckedChanged;
             CHBX_ROTZ.CheckedChanged += CHBX_ROTZ_CheckedChanged;
             CHBX_LINES.CheckedChanged += CHBX_LINES_CheckedChanged;
-            CHBX_COLOR.CheckedChanged += CHBX_COLOR_CheckedChanged;
         }
 
         private void Form1_Load_1(object sender, EventArgs e)
         {
-            string pathToObj = Path.Combine(Application.StartupPath, "sph.obj");
+            string pathToObj = Path.Combine(Application.StartupPath, "MYOBJ.obj");
             ObjLoader objLoader = new ObjLoader(pathToObj);
             scene = new Scene(objLoader);
 
@@ -71,47 +70,66 @@ namespace ExamenParcial
 
         private void CHBX_ROTX_CheckedChanged(object sender, EventArgs e)
         {
-            if (CHBX_ROTX.Checked)
-            {
-                // Ejemplo: Rota 5 grados en X. Convierte grados a radianes.
-                float angleX = 0.01f;
-               // scene.RotateAllMeshes(angleX, 0, 0);
-            }
-            else
-            {
-                // Si deseas hacer aalgo cuando el checkbox es desmarcado, colócalo aquí.
-            }
-
+            scene.RotateXEnabled = CHBX_ROTX.Checked;
             RenderScene();
         }
 
         private void CHBX_ROTY_CheckedChanged(object sender, EventArgs e)
         {
-            scene.SetRotatingX(CHBX_ROTX.Checked);
+            scene.RotateYEnabled = CHBX_ROTY.Checked;
+            RenderScene();
         }
 
         private void CHBX_ROTZ_CheckedChanged(object sender, EventArgs e)
         {
-            canvas.RotateZ = CHBX_ROTZ.Checked;
+
+            scene.RotateZEnabled = CHBX_ROTZ.Checked;
             RenderScene();
         }
 
         private void CHBX_LINES_CheckedChanged(object sender, EventArgs e)
         {
-            canvas.RenderLines = CHBX_LINES.Checked;
+            scene.RenderWireframe = CHBX_LINES.Checked;
             RenderScene();
         }
 
-        private void CHBX_COLOR_CheckedChanged(object sender, EventArgs e)
+
+
+
+        private void BTN_1_Click(object sender, EventArgs e)
         {
-            canvas.ApplyFlatShading = CHBX_COLOR.Checked;
+            Console.WriteLine("Antes de la traslación:");
+            scene.PrintVerticesPositions();
+
+            // Aplicar una traslación más pequeña
+            scene.TranslateAllMeshes(1, 0.5f, 0);
+
+            Console.WriteLine("Después de la traslación:");
+            scene.PrintVerticesPositions();
+        }
+
+        private void BTN_ESCALAR_Click(object sender, EventArgs e)
+        {
+                // Aplica un factor de escala a toda la escena
+                scene.ScaleAllMeshes(0.9f, 0.9f, 0.9f); // Esto escalará todos los objetos en la escena un 10% más grandes
+
+                RenderScene(); // Asegúrate de volver a renderizar la escena para ver los cambios
+
+        }
+
+        private void BTN_Rotacion_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Antes de la ROTACION:");
+            scene.PrintVerticesPositions();
+            foreach (var mesh in scene.meshes)
+            {
+                scene.RotateZ(mesh, 90);
+            }
             RenderScene();
+            Console.WriteLine("Después de la ROTACION:");
+            scene.PrintVerticesPositions();
         }
 
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
 
     }
 }

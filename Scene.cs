@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 
 namespace ExamenParcial
 {
@@ -14,78 +15,49 @@ namespace ExamenParcial
         public Mesh Mesh { get; private set; }
         public List<Tuple<int, int, int>> Indices { get; set; }
 
-        private List<Mesh> meshes;
+        public List<Mesh> meshes;
         private float rotationAngle;
         public float RotationAngle => rotationAngle; // Propiedad de solo lectura en Scene
 
         private Vertex cameraPosition = new Vertex(new float[] { 0, 0, -1 });
         private Vertex lightPosition = new Vertex(new float[] { -1, -1, -1f });
 
-        // En Scene.cs
-        private bool rotatingX = false;
-        private bool rotatingY = false;
-        private bool rotatingZ = false;
+        public bool RotateXEnabled { get; set; } = false;
+        public bool RotateYEnabled { get; set; } = false;
+        public bool RotateZEnabled { get; set; } = false;
 
-        public void SetRotatingX(bool state) { rotatingX = state; }
-        public void SetRotatingY(bool state) { rotatingY = state; }
-        public void SetRotatingZ(bool state) { rotatingZ = state; }
+        public bool RenderWireframe { get; set; } = false;
+
+
 
         public void Update()
         {
-            float angle = 0.5f; // Este es el ángulo de rotación en grados, ajusta según necesites
-            if (rotatingX) RotateAllMeshes(angle, 0, 0);
-            if (rotatingY) RotateAllMeshes(0, angle, 0);
-            if (rotatingZ) RotateAllMeshes(0, 0, angle);
-        }
+            float angle = 0.5f; // Ángulo de rotación, ajusta según necesites
 
-
-
-        public void RotateMesh(float angleX, float angleY, float angleZ, Mesh mesh)
-        {
-            // Conversión de ángulos de grados a radianes
-            float radX = angleX * (float)Math.PI / 180f;
-            float radY = angleY * (float)Math.PI / 180f;
-            float radZ = angleZ * (float)Math.PI / 180f;
-
-            // Pre-cálculo de los senos y cosenos para cada eje
-            float cosX = (float)Math.Cos(radX), sinX = (float)Math.Sin(radX);
-            float cosY = (float)Math.Cos(radY), sinY = (float)Math.Sin(radY);
-            float cosZ = (float)Math.Cos(radZ), sinZ = (float)Math.Sin(radZ);
-
-            // Asumimos que centerX, centerY, centerZ representan el centro de la malla correctamente calculado
-            float centerX = mesh.Vertices.Average(v => v.Values[0]);
-            float centerY = mesh.Vertices.Average(v => v.Values[1]);
-            float centerZ = mesh.Vertices.Average(v => v.Values[2]);
-
-            for (int i = 0; i < mesh.Vertices.Count; i++)
+            if (RotateXEnabled)
             {
-                Vertex vertex = mesh.Vertices[i];
-                // Traslación de vértices al origen para rotación
-                float x = vertex.Values[0] - centerX;
-                float y = vertex.Values[1] - centerY;
-                float z = vertex.Values[2] - centerZ;
-
-                // Aplicar rotación en X
-                float dy = y * cosX - z * sinX;
-                float dz = y * sinX + z * cosX;
-
-                // Aplicar rotación en Y
-                float dx = x * cosY + dz * sinY;
-                dz = dz * cosY - x * sinY;
-
-                // Aplicar rotación en Z
-                x = dx * cosZ - dy * sinZ;
-                y = dx * sinZ + dy * cosZ;
-
-                // Traslada los vértices rotados de
-                x += centerX;
-                y += centerY;
-                z += centerZ;
-
-                // Actualiza el vértice en la malla con las nuevas coordenadas
-                mesh.Vertices[i] = new Vertex(new float[] { x, y, z });
+                foreach (var mesh in meshes)
+                {
+                    RotateX(mesh, angle);
+                }
+            }
+            if (RotateYEnabled)
+            {
+                foreach (var mesh in meshes)
+                {
+                    RotateY(mesh, angle);
+                }
+            }
+            if (RotateZEnabled)
+            {
+                foreach (var mesh in meshes)
+                {
+                    RotateZ(mesh, angle);
+                }
             }
         }
+
+
 
         //
 
@@ -116,19 +88,16 @@ namespace ExamenParcial
             graphics.Clear(Color.Black);
             colorBase = Color.FromArgb(255, 0, 0);
 
-            // Utiliza el vector de luz actualizado y lo normaliza
             Vertex luz = new Vertex(new float[]
             {
-                lightPosition.Values[0],
-                lightPosition.Values[1],
-                lightPosition.Values[2]
+        lightPosition.Values[0],
+        lightPosition.Values[1],
+        lightPosition.Values[2]
             });
-
             luz.Normalize();
 
             float minX = float.MaxValue, minY = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
 
-            // Asumiendo que tienes una manera de obtener todos los vértices de tus mallas
             foreach (var mesh in meshes)
             {
                 foreach (var vertex in mesh.Vertices)
@@ -155,26 +124,47 @@ namespace ExamenParcial
                     {
                         Vertex vertex = (i == 0) ? face.V1 : (i == 1) ? face.V2 : face.V3;
                         var x = vertex.Values[0] * scale + offsetX;
-                        var y = pictureBox.Height - (vertex.Values[1] * scale + offsetY); // Ajuste de coordenadas Y
+                        var y = pictureBox.Height - (vertex.Values[1] * scale + offsetY);
                         points[i] = new PointF(x, y);
                     }
 
-                    // Lógica para culling de caras traseras y shading simplificado
-                    var edge1 = new PointF(points[1].X - points[0].X, points[1].Y - points[0].Y);
-                    var edge2 = new PointF(points[2].X - points[1].X, points[2].Y - points[1].Y);
-                    var crossProduct = edge1.X * edge2.Y - edge1.Y * edge2.X;
+                    var normal = Vertex.CalculateNormal(face.V1, face.V2, face.V3);
+                    var d = Vertex.Dot(normal, luz);
+                    var intensity = Clamp(d, 0, 1);
+                    // Asegura que la intensidad esté entre 0 y 1
+                    float clampedIntensity = Math.Max(0, Math.Min(1, intensity));
 
-                    if (crossProduct > 0) // Condición simple para culling de caras traseras
+                    // Calcula los componentes de color finales y los clampa entre 0 y 255
+                    int r = (int)(colorBase.R * clampedIntensity);
+                    int g = (int)(colorBase.G * clampedIntensity);
+                    int b = (int)(colorBase.B * clampedIntensity);
+
+                    r = Math.Max(0, Math.Min(255, r));
+                    g = Math.Max(0, Math.Min(255, g));
+                    b = Math.Max(0, Math.Min(255, b));
+
+                    var colorFinal = Color.FromArgb(r, g, b);
+
+                    if (RenderWireframe)
                     {
-                        Vertex normal = Vertex.CalculateNormal(face.V1, face.V2, face.V3);
-                        float d = Math.Max(0, Math.Min(1, Vertex.Dot(normal, luz)));
-
-                        Color colorFinal = Color.FromArgb(
-                            (int)(colorBase.R * d),
-                            (int)(colorBase.G * d),
-                            (int)(colorBase.B * d));
-
-                        drawTriangle(graphics, points, colorFinal);
+                        // Solo dibuja el wireframe
+                        using (Pen pen = new Pen(Color.White))
+                        {
+                            graphics.DrawPolygon(pen, points);
+                        }
+                    }
+                    else
+                    {
+                        // Dibuja caras rellenas
+                        using (SolidBrush brush = new SolidBrush(colorFinal))
+                        {
+                            graphics.FillPolygon(brush, points);
+                        }
+                        // Opcional: Dibuja el contorno de cada cara para mejorar la distinción visual
+                        using (Pen pen = new Pen(Color.Black))
+                        {
+                            graphics.DrawPolygon(pen, points);
+                        }
                     }
                 }
             }
@@ -182,48 +172,49 @@ namespace ExamenParcial
 
 
 
-
-        public void RotateAllMeshes(float angleX, float angleY, float angleZ)
+        public void Rotate(float angleX, float angleY, float angleZ, Mesh mesh)
         {
-            foreach (var mesh in meshes)
+            float radX = angleX * (float)Math.PI / 180f;
+            float radY = angleY * (float)Math.PI / 180f;
+            float radZ = angleZ * (float)Math.PI / 180f;
+
+            float cosX = (float)Math.Cos(radX), sinX = (float)Math.Sin(radX);
+            float cosY = (float)Math.Cos(radY), sinY = (float)Math.Sin(radY);
+            float cosZ = (float)Math.Cos(radZ), sinZ = (float)Math.Sin(radZ);
+
+            float centerX = mesh.Vertices.Average(v => v.Values[0]);
+            float centerY = mesh.Vertices.Average(v => v.Values[1]);
+            float centerZ = mesh.Vertices.Average(v => v.Values[2]);
+
+            List<Vertex> rotatedVertices = new List<Vertex>();
+
+            for (int i = 0; i < mesh.Vertices.Count; i++)
             {
-                RotateMesh(angleX, angleY, angleZ, mesh);
+                var vertex = mesh.Vertices[i];
+                float x = vertex.Values[0] - centerX;
+                float y = vertex.Values[1] - centerY;
+                float z = vertex.Values[2] - centerZ;
+
+                // Aplicar rotación en X
+                float dy = y * cosX - z * sinX;
+                float dz = y * sinX + z * cosX;
+
+                // Aplicar rotación en Y
+                float newX = x * cosY + dz * sinY;
+                dz = dz * cosY - x * sinY;
+
+                // Aplicar rotación en Z
+                float newY = newX * cosZ - dy * sinZ;
+                newY = newX * sinZ + dy * cosZ; // Esta línea estaba incorrecta, usaba variables sin inicializar
+
+                newX += centerX;
+                newY += centerY;
+                dz += centerZ;
+
+                rotatedVertices.Add(new Vertex(new float[] { newX, newY, dz }));
             }
-        }
 
-
-
-        public void RotateX(float angle)
-        {
-            foreach (var mesh in meshes)
-            {
-                for (int i = 0; i < mesh.Vertices.Count; i++)
-                {
-                    mesh.Vertices[i] = Rotaciones.Rot(angle, mesh.Vertices[i], 'x');
-                }
-            }
-        }
-
-        public void RotateY(float angle)
-        {
-            foreach (var mesh in meshes)
-            {
-                for (int i = 0; i < mesh.Vertices.Count; i++)
-                {
-                    mesh.Vertices[i] = Rotaciones.Rot(angle, mesh.Vertices[i], 'y');
-                }
-            }
-        }
-
-        public void RotateZ(float angle)
-        {
-            foreach (var mesh in meshes)
-            {
-                for (int i = 0; i < mesh.Vertices.Count; i++)
-                {
-                    mesh.Vertices[i] = Rotaciones.Rot(angle, mesh.Vertices[i], 'z');
-                }
-            }
+            mesh.Vertices = rotatedVertices;
         }
 
         public static float Clamp(float value, float min, float max)
@@ -257,7 +248,137 @@ namespace ExamenParcial
 
             return Color.FromArgb(objectColor.A, r, g, b);
         }
+
+
+        public void TranslateAllMeshes(float deltaX, float deltaY, float deltaZ)
+        {
+            foreach (var mesh in meshes)
+            {
+                TranslateMesh(deltaX, deltaY, deltaZ, mesh);
+            }
+
+        }
+
+        private void TranslateMesh(float deltaX, float deltaY, float deltaZ, Mesh mesh)
+        {
+            for (int i = 0; i < mesh.Vertices.Count; i++)
+            {
+                Vertex vertex = mesh.Vertices[i];
+                // Traslación de vértices
+                float x = vertex.Values[0] + deltaX;
+                float y = vertex.Values[1] + deltaY;
+                float z = vertex.Values[2] + deltaZ;
+
+                // Actualiza el vértice en la malla con las nuevas coordenadas
+                mesh.Vertices[i] = new Vertex(new float[] { x, y, z });
+            }
+        }
+
+
+        public void PrintVerticesPositions()
+        {
+            Console.WriteLine("Imprimiendo posiciones de vértices:");
+            foreach (var mesh in meshes)
+            {
+                foreach (var vertex in mesh.Vertices)
+                {
+                    Console.WriteLine($"Vértice: X={vertex.Values[0]}, Y={vertex.Values[1]}, Z={vertex.Values[2]}");
+                }
+            }
+            Console.WriteLine("Fin de la impresión de posiciones.");
+        }
+
+        public void ScaleAllMeshes(float scaleX, float scaleY, float scaleZ)
+        {
+            foreach (var mesh in meshes)
+            {
+                ScaleMesh(scaleX, scaleY, scaleZ, mesh);
+            }
+        }
+
+        private void ScaleMesh(float scaleX, float scaleY, float scaleZ, Mesh mesh)
+        {
+            for (int i = 0; i < mesh.Vertices.Count; i++)
+            {
+                Vertex vertex = mesh.Vertices[i];
+                // Escalado de vértices
+                float x = vertex.Values[0] / scaleX;
+                float y = vertex.Values[1] / scaleY;
+                float z = vertex.Values[2] / scaleZ;
+
+                // Actualiza el vértice en la malla con las nuevas coordenadas
+                mesh.Vertices[i] = new Vertex(new float[] { x, y, z });
+            }
+        }
+
+        public void Rotate90DegreesYAxis(Mesh mesh)
+        {
+            float angleY = 90; // Rotar 90 grados en el eje Y
+            float radY = angleY * (float)Math.PI / 180f;
+
+            float cosY = (float)Math.Cos(radY), sinY = (float)Math.Sin(radY);
+
+            List<Vertex> rotatedVertices = new List<Vertex>();
+
+            foreach (var vertex in mesh.Vertices)
+            {
+                float x = vertex.Values[0];
+                float z = vertex.Values[2];
+
+                // Aplicar rotación en Y
+                float newX = x * cosY - z * sinY;
+                float newZ = x * sinY + z * cosY;
+
+                // No cambia el valor de Y
+                float newY = vertex.Values[1];
+
+                rotatedVertices.Add(new Vertex(new float[] { newX, newY, newZ }));
+            }
+
+            mesh.Vertices = rotatedVertices;
+        }
+
+        public void RotateY(Mesh mesh, float degrees)
+        {
+            float radians = degrees * (float)Math.PI / 180;
+            foreach (var vertex in mesh.Vertices)
+            {
+                float x = vertex.Values[0];
+                float z = vertex.Values[2];
+
+                vertex.Values[0] = x * (float)Math.Cos(radians) + z * (float)Math.Sin(radians);
+                vertex.Values[2] = -x * (float)Math.Sin(radians) + z * (float)Math.Cos(radians);
+            }
+        }
+
+        public void RotateX(Mesh mesh, float degrees)
+        {
+            float radians = degrees * (float)Math.PI / 180f;
+            foreach (var vertex in mesh.Vertices)
+            {
+                var rotatedVertex = Rotaciones.Rot(radians, vertex, 'x');
+                vertex.Values[0] = rotatedVertex.Values[0];
+                vertex.Values[1] = rotatedVertex.Values[1];
+                vertex.Values[2] = rotatedVertex.Values[2];
+            }
+        }
+
+        public void RotateZ(Mesh mesh, float degrees)
+        {
+            float radians = degrees * (float)Math.PI / 180;
+            foreach (var vertex in mesh.Vertices)
+            {
+                float x = vertex.Values[0];
+                float y = vertex.Values[1];
+
+                vertex.Values[0] = x * (float)Math.Cos(radians) - y * (float)Math.Sin(radians);
+                vertex.Values[1] = x * (float)Math.Sin(radians) + y * (float)Math.Cos(radians);
+            }
+        }   
+
+
     }
+
 
 
 

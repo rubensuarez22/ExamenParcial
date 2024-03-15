@@ -35,17 +35,19 @@ namespace ExamenParcial
             this.MAIN_PNL = new System.Windows.Forms.Panel();
             this.PCT_CANVAS = new System.Windows.Forms.PictureBox();
             this.PNL_RIGHT = new System.Windows.Forms.Panel();
+            this.BTN_ESCALAR = new System.Windows.Forms.Button();
             this.PNL_LEFT = new System.Windows.Forms.Panel();
+            this.BTN_1 = new System.Windows.Forms.Button();
+            this.CHBX_LINES = new System.Windows.Forms.CheckBox();
+            this.CHBX_ROTZ = new System.Windows.Forms.CheckBox();
+            this.CHBX_ROTY = new System.Windows.Forms.CheckBox();
+            this.CHBX_ROTX = new System.Windows.Forms.CheckBox();
             this.PANEL_BOTTOM = new System.Windows.Forms.Panel();
             this.LBL_STATUS = new System.Windows.Forms.Label();
             this.PNL_HEAD = new System.Windows.Forms.Panel();
-            this.CHBX_ROTX = new System.Windows.Forms.CheckBox();
-            this.CHBX_ROTY = new System.Windows.Forms.CheckBox();
-            this.CHBX_ROTZ = new System.Windows.Forms.CheckBox();
-            this.CHBX_LINES = new System.Windows.Forms.CheckBox();
-            this.CHBX_COLOR = new System.Windows.Forms.CheckBox();
             this.MAIN_PNL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PCT_CANVAS)).BeginInit();
+            this.PNL_RIGHT.SuspendLayout();
             this.PNL_LEFT.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -85,6 +87,8 @@ namespace ExamenParcial
             // PNL_RIGHT
             // 
             this.PNL_RIGHT.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.PNL_RIGHT.Controls.Add(this.BTN_1);
+            this.PNL_RIGHT.Controls.Add(this.BTN_ESCALAR);
             this.PNL_RIGHT.Dock = System.Windows.Forms.DockStyle.Right;
             this.PNL_RIGHT.Location = new System.Drawing.Point(488, 65);
             this.PNL_RIGHT.Margin = new System.Windows.Forms.Padding(2);
@@ -92,10 +96,19 @@ namespace ExamenParcial
             this.PNL_RIGHT.Size = new System.Drawing.Size(112, 223);
             this.PNL_RIGHT.TabIndex = 4;
             // 
+            // BTN_ESCALAR
+            // 
+            this.BTN_ESCALAR.Location = new System.Drawing.Point(5, 6);
+            this.BTN_ESCALAR.Name = "BTN_ESCALAR";
+            this.BTN_ESCALAR.Size = new System.Drawing.Size(75, 23);
+            this.BTN_ESCALAR.TabIndex = 0;
+            this.BTN_ESCALAR.Text = "Escalado";
+            this.BTN_ESCALAR.UseVisualStyleBackColor = true;
+            this.BTN_ESCALAR.Click += new System.EventHandler(this.BTN_ESCALAR_Click);
+            // 
             // PNL_LEFT
             // 
             this.PNL_LEFT.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.PNL_LEFT.Controls.Add(this.CHBX_COLOR);
             this.PNL_LEFT.Controls.Add(this.CHBX_LINES);
             this.PNL_LEFT.Controls.Add(this.CHBX_ROTZ);
             this.PNL_LEFT.Controls.Add(this.CHBX_ROTY);
@@ -106,6 +119,56 @@ namespace ExamenParcial
             this.PNL_LEFT.Name = "PNL_LEFT";
             this.PNL_LEFT.Size = new System.Drawing.Size(112, 223);
             this.PNL_LEFT.TabIndex = 3;
+            // 
+            // BTN_1
+            // 
+            this.BTN_1.Location = new System.Drawing.Point(5, 35);
+            this.BTN_1.Name = "BTN_1";
+            this.BTN_1.Size = new System.Drawing.Size(75, 23);
+            this.BTN_1.TabIndex = 5;
+            this.BTN_1.Text = "Traslacion";
+            this.BTN_1.UseVisualStyleBackColor = true;
+            this.BTN_1.Click += new System.EventHandler(this.BTN_1_Click);
+            // 
+            // CHBX_LINES
+            // 
+            this.CHBX_LINES.AutoSize = true;
+            this.CHBX_LINES.Location = new System.Drawing.Point(13, 178);
+            this.CHBX_LINES.Name = "CHBX_LINES";
+            this.CHBX_LINES.Size = new System.Drawing.Size(77, 17);
+            this.CHBX_LINES.TabIndex = 3;
+            this.CHBX_LINES.Text = "WireFrame";
+            this.CHBX_LINES.UseVisualStyleBackColor = true;
+            // 
+            // CHBX_ROTZ
+            // 
+            this.CHBX_ROTZ.AutoSize = true;
+            this.CHBX_ROTZ.Location = new System.Drawing.Point(13, 54);
+            this.CHBX_ROTZ.Name = "CHBX_ROTZ";
+            this.CHBX_ROTZ.Size = new System.Drawing.Size(53, 17);
+            this.CHBX_ROTZ.TabIndex = 2;
+            this.CHBX_ROTZ.Text = "Rot Z";
+            this.CHBX_ROTZ.UseVisualStyleBackColor = true;
+            // 
+            // CHBX_ROTY
+            // 
+            this.CHBX_ROTY.AutoSize = true;
+            this.CHBX_ROTY.Location = new System.Drawing.Point(13, 30);
+            this.CHBX_ROTY.Name = "CHBX_ROTY";
+            this.CHBX_ROTY.Size = new System.Drawing.Size(53, 17);
+            this.CHBX_ROTY.TabIndex = 1;
+            this.CHBX_ROTY.Text = "Rot Y";
+            this.CHBX_ROTY.UseVisualStyleBackColor = true;
+            // 
+            // CHBX_ROTX
+            // 
+            this.CHBX_ROTX.AutoSize = true;
+            this.CHBX_ROTX.Location = new System.Drawing.Point(13, 6);
+            this.CHBX_ROTX.Name = "CHBX_ROTX";
+            this.CHBX_ROTX.Size = new System.Drawing.Size(53, 17);
+            this.CHBX_ROTX.TabIndex = 0;
+            this.CHBX_ROTX.Text = "Rot X";
+            this.CHBX_ROTX.UseVisualStyleBackColor = true;
             // 
             // PANEL_BOTTOM
             // 
@@ -137,57 +200,6 @@ namespace ExamenParcial
             this.PNL_HEAD.Size = new System.Drawing.Size(600, 65);
             this.PNL_HEAD.TabIndex = 0;
             // 
-            // CHBX_ROTX
-            // 
-            this.CHBX_ROTX.AutoSize = true;
-            this.CHBX_ROTX.Location = new System.Drawing.Point(13, 6);
-            this.CHBX_ROTX.Name = "CHBX_ROTX";
-            this.CHBX_ROTX.Size = new System.Drawing.Size(53, 17);
-            this.CHBX_ROTX.TabIndex = 0;
-            this.CHBX_ROTX.Text = "Rot X";
-            this.CHBX_ROTX.UseVisualStyleBackColor = true;
-            // 
-            // CHBX_ROTY
-            // 
-            this.CHBX_ROTY.AutoSize = true;
-            this.CHBX_ROTY.Location = new System.Drawing.Point(13, 30);
-            this.CHBX_ROTY.Name = "CHBX_ROTY";
-            this.CHBX_ROTY.Size = new System.Drawing.Size(53, 17);
-            this.CHBX_ROTY.TabIndex = 1;
-            this.CHBX_ROTY.Text = "Rot Y";
-            this.CHBX_ROTY.UseVisualStyleBackColor = true;
-            // 
-            // CHBX_ROTZ
-            // 
-            this.CHBX_ROTZ.AutoSize = true;
-            this.CHBX_ROTZ.Location = new System.Drawing.Point(13, 54);
-            this.CHBX_ROTZ.Name = "CHBX_ROTZ";
-            this.CHBX_ROTZ.Size = new System.Drawing.Size(53, 17);
-            this.CHBX_ROTZ.TabIndex = 2;
-            this.CHBX_ROTZ.Text = "Rot Z";
-            this.CHBX_ROTZ.UseVisualStyleBackColor = true;
-            // 
-            // CHBX_LINES
-            // 
-            this.CHBX_LINES.AutoSize = true;
-            this.CHBX_LINES.Location = new System.Drawing.Point(13, 178);
-            this.CHBX_LINES.Name = "CHBX_LINES";
-            this.CHBX_LINES.Size = new System.Drawing.Size(77, 17);
-            this.CHBX_LINES.TabIndex = 3;
-            this.CHBX_LINES.Text = "WireFrame";
-            this.CHBX_LINES.UseVisualStyleBackColor = true;
-            // 
-            // CHBX_COLOR
-            // 
-            this.CHBX_COLOR.AutoSize = true;
-            this.CHBX_COLOR.Location = new System.Drawing.Point(13, 201);
-            this.CHBX_COLOR.Name = "CHBX_COLOR";
-            this.CHBX_COLOR.Size = new System.Drawing.Size(85, 17);
-            this.CHBX_COLOR.TabIndex = 4;
-            this.CHBX_COLOR.Text = "Flat Shading";
-            this.CHBX_COLOR.UseVisualStyleBackColor = true;
-            this.CHBX_COLOR.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -201,6 +213,7 @@ namespace ExamenParcial
             this.Load += new System.EventHandler(this.Form1_Load_1);
             this.MAIN_PNL.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PCT_CANVAS)).EndInit();
+            this.PNL_RIGHT.ResumeLayout(false);
             this.PNL_LEFT.ResumeLayout(false);
             this.PNL_LEFT.PerformLayout();
             this.ResumeLayout(false);
@@ -216,11 +229,12 @@ namespace ExamenParcial
         private System.Windows.Forms.Panel PNL_LEFT;
         private System.Windows.Forms.Panel PANEL_BOTTOM;
         private System.Windows.Forms.Label LBL_STATUS;
-        private System.Windows.Forms.CheckBox CHBX_COLOR;
         private System.Windows.Forms.CheckBox CHBX_LINES;
         private System.Windows.Forms.CheckBox CHBX_ROTZ;
         private System.Windows.Forms.CheckBox CHBX_ROTY;
         private System.Windows.Forms.CheckBox CHBX_ROTX;
+        private System.Windows.Forms.Button BTN_1;
+        private System.Windows.Forms.Button BTN_ESCALAR;
     }
 }
 
