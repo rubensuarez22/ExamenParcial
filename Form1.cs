@@ -29,12 +29,11 @@ namespace ExamenParcial
             CHBX_ROTX.CheckedChanged += CHBX_ROTX_CheckedChanged;
             CHBX_ROTY.CheckedChanged += CHBX_ROTY_CheckedChanged;
             CHBX_ROTZ.CheckedChanged += CHBX_ROTZ_CheckedChanged;
-            CHBX_LINES.CheckedChanged += CHBX_LINES_CheckedChanged;
         }
 
         private void Form1_Load_1(object sender, EventArgs e)
         {
-            string pathToObj = Path.Combine(Application.StartupPath, "MYOBJ.obj");
+            string pathToObj = Path.Combine(Application.StartupPath, "sph.obj");
             ObjLoader objLoader = new ObjLoader(pathToObj);
             scene = new Scene(objLoader);
 
@@ -53,8 +52,8 @@ namespace ExamenParcial
             using (Graphics graphics = Graphics.FromImage(bmp))
             {
                 // Asigna el color base o gestiona la lógica para cambiarlo según sea necesario.
-                Color colorBase = Color.FromArgb(255, 182, 203);
-                scene.Projection(graphics, PCT_CANVAS, colorBase); // Asegúrate de ajustar la firma de Projection según sea necesario.
+                Color colorBase = Color.FromArgb(0, 182, 0);
+                scene.Projection(graphics, PCT_CANVAS, colorBase); 
             }
 
             // Actualiza la imagen del PictureBox con el nuevo bitmap.
@@ -87,13 +86,6 @@ namespace ExamenParcial
             RenderScene();
         }
 
-        private void CHBX_LINES_CheckedChanged(object sender, EventArgs e)
-        {
-            scene.RenderWireframe = CHBX_LINES.Checked;
-            RenderScene();
-        }
-
-
 
 
         private void BTN_1_Click(object sender, EventArgs e)
@@ -116,20 +108,6 @@ namespace ExamenParcial
                 RenderScene(); // Asegúrate de volver a renderizar la escena para ver los cambios
 
         }
-
-        private void BTN_Rotacion_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Antes de la ROTACION:");
-            scene.PrintVerticesPositions();
-            foreach (var mesh in scene.meshes)
-            {
-                scene.RotateZ(mesh, 90);
-            }
-            RenderScene();
-            Console.WriteLine("Después de la ROTACION:");
-            scene.PrintVerticesPositions();
-        }
-
 
     }
 }
