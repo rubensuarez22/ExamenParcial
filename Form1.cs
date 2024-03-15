@@ -33,7 +33,7 @@ namespace ExamenParcial
 
         private void Form1_Load_1(object sender, EventArgs e)
         {
-            string pathToObj = Path.Combine(Application.StartupPath, "sph.obj");
+            string pathToObj = Path.Combine(Application.StartupPath, "MYOBJ.obj");
             ObjLoader objLoader = new ObjLoader(pathToObj);
             scene = new Scene(objLoader);
 
