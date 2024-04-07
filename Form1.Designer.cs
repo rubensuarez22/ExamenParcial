@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BASICFORM
+namespace ExamenParcial
 {
     partial class Form1
     {
